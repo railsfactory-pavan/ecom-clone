@@ -4,5 +4,4 @@ class Status < ApplicationRecord
   validates :description, :presence => true
   validates :title,       :presence => true
 
-  attr_accessor :description, :title
 end

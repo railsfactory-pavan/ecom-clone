@@ -17,5 +17,4 @@ class Order < ApplicationRecord
   validates :pst_rate,    :allow_nil => true,
                           :numericality => { :greater_than_or_equal_to => 0 }               
 
-  attr_accessor :gst_rate, :hst_rate, :pst_rate, :status_id, :order_total, :customer_id
 end

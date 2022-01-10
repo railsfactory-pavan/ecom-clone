@@ -11,5 +11,4 @@ class Province < ApplicationRecord
   validates :pst,    :allow_nil => true,
                :numericality => { :greater_than_or_equal_to => 0 } 
 
-  attr_accessor :gst, :hst, :name, :pst
 end

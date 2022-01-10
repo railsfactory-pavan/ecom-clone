@@ -15,5 +15,4 @@ class Product < ApplicationRecord
   validates :stock_quantity, :presence => true,
                              :numericality => { :greater_than_or_equal_to => 0 }
 
-  attr_accessor :description, :name, :price, :sale_price, :stock_quantity, :category_id, :image
 end

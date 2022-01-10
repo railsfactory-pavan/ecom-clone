@@ -7,6 +7,4 @@ class LineItem < ApplicationRecord
 
   validates :quantity, :presence => true,
                        :numericality => { :greater_than_or_equal_to => 0 }
-
-  attr_accessor :price, :quantity
 end
