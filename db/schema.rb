@@ -10,10 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_183605) do
+ActiveRecord::Schema.define(version: 2022_03_18_113603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_histories", force: :cascade do |t|
+    t.integer "credit_rating"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_histories_on_account_id"
+  end
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "supplier_id"
+    t.index ["supplier_id"], name: "index_accounts_on_supplier_id"
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -41,6 +57,29 @@ ActiveRecord::Schema.define(version: 2022_01_04_183605) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "appointments", force: :cascade do |t|
+    t.datetime "appointment_date"
+    t.bigint "physician_id"
+    t.bigint "patient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["physician_id"], name: "index_appointments_on_physician_id"
+  end
+
+  create_table "assemblies", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "assemblies_parts", id: false, force: :cascade do |t|
+    t.bigint "assembly_id"
+    t.bigint "part_id"
+    t.index ["assembly_id"], name: "index_assemblies_parts_on_assembly_id"
+    t.index ["part_id"], name: "index_assemblies_parts_on_part_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
@@ -58,6 +97,12 @@ ActiveRecord::Schema.define(version: 2022_01_04_183605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "province_id"
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "line_items", force: :cascade do |t|
@@ -83,6 +128,32 @@ ActiveRecord::Schema.define(version: 2022_01_04_183605) do
   create_table "pages", force: :cascade do |t|
     t.string "title"
     t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "paragraphs", force: :cascade do |t|
+    t.string "name"
+    t.bigint "section_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_paragraphs_on_section_id"
+  end
+
+  create_table "parts", force: :cascade do |t|
+    t.string "part_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "patients", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "physicians", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -117,6 +188,14 @@ ActiveRecord::Schema.define(version: 2022_01_04_183605) do
     t.text "content"
   end
 
+  create_table "sections", force: :cascade do |t|
+    t.string "name"
+    t.bigint "document_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_sections_on_document_id"
+  end
+
   create_table "statuses", force: :cascade do |t|
     t.string "title"
     t.string "description"
@@ -124,4 +203,16 @@ ActiveRecord::Schema.define(version: 2022_01_04_183605) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "suppliers", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "account_histories", "accounts"
+  add_foreign_key "accounts", "suppliers"
+  add_foreign_key "appointments", "patients"
+  add_foreign_key "appointments", "physicians"
+  add_foreign_key "paragraphs", "sections"
+  add_foreign_key "sections", "documents"
 end
