@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   has_many :reviews
 
   belongs_to :category
+  has_many :pictures, as: :imageable
 
   validates :name,           :presence => true
   validates :description,    :presence => true
